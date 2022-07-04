@@ -22,11 +22,9 @@ namespace CryptoApi.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<double>("Valor")
@@ -34,7 +32,7 @@ namespace CryptoApi.Migrations
 
                     b.HasKey("MonedaId");
 
-                    b.ToTable("Conis");
+                    b.ToTable("Coins");
 
                     b.HasData(
                         new

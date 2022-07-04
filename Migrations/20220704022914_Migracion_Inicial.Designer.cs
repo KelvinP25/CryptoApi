@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CryptoApi.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20220628150229_Inicial")]
-    partial class Inicial
+    [Migration("20220704022914_Migracion_Inicial")]
+    partial class Migracion_Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,11 +24,9 @@ namespace CryptoApi.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<double>("Valor")
@@ -36,7 +34,7 @@ namespace CryptoApi.Migrations
 
                     b.HasKey("MonedaId");
 
-                    b.ToTable("Conis");
+                    b.ToTable("Coins");
 
                     b.HasData(
                         new

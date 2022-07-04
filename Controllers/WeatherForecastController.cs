@@ -7,27 +7,45 @@ namespace CryptoApi.Controllers;
 [Route("[controller]")]
 public class CoinstController : ControllerBase
 {
-    private readonly ILogger<CoinstController> _logger;
     private Contexto _contexto;
 
-    public CoinstController(ILogger<CoinstController> logger, Contexto contexto)
+    public CoinstController(Contexto contexto)
     {
-        _logger = logger;
         _contexto = contexto;
     }
 
-    [HttpGet(Name = "GetCoins")]
-    public IEnumerable<Coins> Get()
-    {
-        return _contexto.Conis.AsNoTracking().ToList();
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Coins>>> GetCoins(){
+        var lista = await _contexto.Coins.ToListAsync();
+        return lista;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<Coins>> PostCoin(Coins coins)
-    {
-        _contexto.Conis.Add(coins);
-        await _contexto.SaveChangesAsync();
+   [HttpPost]
+    public async Task<ActionResult<Coins>> PostCoin(Coins coin){
+        try{
+            if (coin.MonedaId >= 0){
+                if(CoinExiste(coin.MonedaId)){
+                    _contexto.Entry(coin).State = EntityState.Modified;
+                    await _contexto.SaveChangesAsync();
+                    return Ok();
+                }
+                else{
+                    _contexto.Coins.Add(coin);
+                    await _contexto.SaveChangesAsync();
+                    return CreatedAtAction("GetCoins", new {id = coin.MonedaId}, coin);
+                }
+            }
+            else{
+                return CreatedAtAction("PostAsync", coin);
+            }
+        }
+        catch(Exception){
+            throw;
+        }
+    }
 
-        return CreatedAtAction(nameof(PostCoin), coins);
+    private bool CoinExiste(int id){
+        var existe = _contexto.Coins.Any(x => x.MonedaId == id);
+        return existe;
     }
 }

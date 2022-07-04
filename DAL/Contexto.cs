@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class Contexto: DbContext
 {
-    public DbSet<Coins> Conis { get; set; }
+    public DbSet<Coins> Coins { get; set; }
 
     public Contexto(DbContextOptions<Contexto> options) : base(options)
     {
